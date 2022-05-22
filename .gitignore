@@ -12,6 +12,7 @@
 
 # Production
 /build
+/lib
 
 # Generated files
 .docusaurus

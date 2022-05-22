@@ -2,9 +2,22 @@
   "name": "docusaurus-plugin-content-gists",
   "version": "0.0.1",
   "description": "Display gists from GitHub as content in Docusaurus",
-  "main": "src/index.ts",
+  "main": "lib/index.js",
   "repository": "https://github.com/webbertakken/docusaurus-plugin-content-gists.git",
   "author": "Webber <webber@takken.io>",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "scripts": {
+    "build": "tsc --outDir lib",
+    "watch": "yarn build --watch"
+  },
+  "dependencies": {
+    "@docusaurus/utils-validation": "^2.0.0-beta.20",
+    "octokit": "^1.7.1"
+  },
+  "devDependencies": {
+    "@docusaurus/types": "^2.0.0-beta.20",
+    "@octokit/types": "^6.34.0",
+    "typescript": "^4.6.4"
+  }
 }
