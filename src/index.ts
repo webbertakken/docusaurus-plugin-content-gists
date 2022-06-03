@@ -1,6 +1,6 @@
 import { LoadContext, PluginOptions, Plugin } from "@docusaurus/types";
 import GitHub from "./services/GitHub";
-import type { Gists } from "../types";
+import type { Gists } from "./types";
 
 type Content = {
   gists: Gists;
@@ -57,7 +57,7 @@ export default async function gists(
 
       actions.addRoute({
         path: `/gists`,
-        component: "@site/src/components/pages/Gists/GistsPage.tsx",
+        component: "@site/src/components/pages/Gists/index.tsx",
         modules: {
           gists: gistsData,
         },
@@ -75,7 +75,7 @@ export default async function gists(
 
         actions.addRoute({
           path: `/gists/${id}`,
-          component: "@site/src/components/pages/Gists/GistPage.tsx",
+          component: "@site/src/components/pages/Gists/index.tsx",
           modules: { gist },
           exact: true,
         });

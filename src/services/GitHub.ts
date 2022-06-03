@@ -1,5 +1,5 @@
 import { Octokit } from "octokit";
-import { Authenticated, Gist, Gists } from "../../types";
+import { Authenticated, Gist, Gists } from "../types";
 
 type Props = {
   personalAccessToken: string;
