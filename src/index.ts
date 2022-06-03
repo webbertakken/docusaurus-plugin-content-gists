@@ -1,20 +1,47 @@
 import { LoadContext, PluginOptions, Plugin } from "@docusaurus/types";
-import GitHub, { Gist, Gists } from "./services/GitHub";
+import GitHub from "./services/GitHub";
+import type { Gists } from "../types";
 
 type Content = {
   gists: Gists;
 };
 
+interface Options extends PluginOptions {
+  enabled: boolean;
+  verbose: boolean;
+  personalAccessToken: string;
+}
+
 export default async function gists(
   context: LoadContext,
-  options: PluginOptions
+  options: Options
 ): Promise<Plugin> {
+  const { enabled, verbose, personalAccessToken } = options;
+
+  // Disabled
+  if (!enabled) return { name: "docusaurus-plugin-content-gists" };
+
+  const api = new GitHub({ personalAccessToken });
+
   return {
     name: "docusaurus-plugin-content-gists",
 
+    getThemePath() {
+      return "../lib/theme";
+    },
+
+    getTypeScriptThemePath() {
+      return "../src/theme";
+    },
+
     async loadContent(): Promise<Content> {
-      console.log("loading gists");
-      const gists = await GitHub.getMyGists();
+      if (verbose) console.log("--- Gists ---");
+
+      const user = await api.getUsername();
+      if (verbose) console.log(`Retrieving ${user}'s public gists.`);
+
+      const gists = await api.getMyGists();
+      console.log(`Found ${gists.length} public gists for ${user}.`);
 
       return { gists };
     },
@@ -39,15 +66,15 @@ export default async function gists(
 
       // Pages
       for (const gistMeta of gists) {
-        const path = gistMeta.id;
+        const id = gistMeta.id;
 
         const gist = await actions.createData(
-          `gist-${path}.json`,
-          JSON.stringify(await GitHub.getGist(path))
+          `gist-${id}.json`,
+          JSON.stringify(await api.getGist(id))
         );
 
         actions.addRoute({
-          path: `/gists/${path}`,
+          path: `/gists/${id}`,
           component: "@site/src/components/pages/Gists/GistPage.tsx",
           modules: { gist },
           exact: true,

@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Display gists from GitHub as content in Docusaurus",
   "main": "lib/index.js",
+  "types": "types/index.d.ts",
   "repository": "https://github.com/webbertakken/docusaurus-plugin-content-gists.git",
   "author": "Webber <webber@takken.io>",
   "license": "MIT",

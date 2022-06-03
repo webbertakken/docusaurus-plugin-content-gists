@@ -1,52 +1,38 @@
 import { Octokit } from "octokit";
-import { GetResponseDataTypeFromEndpointMethod } from "@octokit/types";
+import { Authenticated, Gist, Gists } from "../../types";
 
-const octokit = new Octokit();
-
-export type Authenticated = GetResponseDataTypeFromEndpointMethod<
-  typeof octokit.rest.users.getAuthenticated
->;
-export type Gist = GetResponseDataTypeFromEndpointMethod<
-  typeof octokit.rest.gists.get
->;
-export type Gists = GetResponseDataTypeFromEndpointMethod<
-  typeof octokit.rest.gists.list
->;
+type Props = {
+  personalAccessToken: string;
+};
 
 export default class GitHub {
-  private static instance: InstanceType<typeof Octokit>;
+  private instance: InstanceType<typeof Octokit>;
 
-  public static getInstance() {
-    if (this.instance) return this.instance;
-
-    console.log("new instance using", process.env.GITHUB_PERSONAL_ACCESS_TOKEN);
-    this.instance = new Octokit({
-      auth: process.env.GITHUB_PERSONAL_ACCESS_TOKEN,
-    });
-
-    return this.instance;
+  constructor(props: Props) {
+    const { personalAccessToken: auth } = props;
+    this.instance = new Octokit({ auth });
   }
 
-  public static async getAuthenticated(): Promise<Authenticated> {
-    const response = await this.getInstance().rest.users.getAuthenticated();
+  public async getAuthenticated(): Promise<Authenticated> {
+    const response = await this.instance.rest.users.getAuthenticated();
 
     return response.data;
   }
 
-  public static async getUsername() {
+  public async getUsername() {
     const authenticated = await this.getAuthenticated();
 
     return authenticated?.login || null;
   }
 
-  public static async getMyGists(): Promise<Gists> {
-    const response = await this.getInstance().rest.gists.list();
+  public async getMyGists(): Promise<Gists> {
+    const response = await this.instance.rest.gists.list();
 
     return response.data.filter((gist) => gist.public === true);
   }
 
-  public static async getGist(id: string) {
-    const response = await this.getInstance().rest.gists.get({ gist_id: id });
+  public async getGist(id: string): Promise<Gist> {
+    const response = await this.instance.rest.gists.get({ gist_id: id });
 
     return response.data;
   }
