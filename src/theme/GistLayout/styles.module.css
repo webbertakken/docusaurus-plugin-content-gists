@@ -1,0 +1,11 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.container {
+  width: 800px;
+  padding: 2em 0;
+}

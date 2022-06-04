@@ -1,4 +1,11 @@
-.layout {
-  max-width: 900px;
-  margin: 0 auto;
+.file {
+  padding-bottom: 1em;
+}
+
+.file .dates {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: .25em .5em;
+  opacity: 0.75;
 }

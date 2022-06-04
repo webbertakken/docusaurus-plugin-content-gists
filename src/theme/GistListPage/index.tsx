@@ -2,7 +2,7 @@
 import React from "react";
 import type { Gists } from "../../types";
 // @ts-ignore
-import Layout from "@theme/Layout";
+import GistLayout from "@theme/GistLayout";
 // @ts-ignore
 import styles from "./styles.module.css";
 
@@ -11,39 +11,33 @@ interface Props {
 }
 
 const GistListPage = ({ gists }: Props) => (
-  <Layout wrapperClassName={styles.layout}>
+  <GistLayout>
     {(gists.length >= 1 && (
       <ul className={styles.list}>
+        <h1>Gists</h1>
         {gists.map(({ id, created_at, updated_at, description, files }) => {
           const title = Object.values(files)[0]!.filename;
           const createdDate = new Date(created_at).toDateString();
           const updatedDate = new Date(updated_at).toDateString();
 
           return (
-            <a key={id} href={`/gists/${id}`}>
+            <div key={id}>
               <li className={styles.item}>
-                {/* Todo convert to classes after introducing tailwind */}
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    padding: ".75em 0",
-                    opacity: 0.75,
-                  }}
-                >
+                <div className={styles.dates}>
                   <sup>Created on {createdDate}</sup>
                   <sup>Last updated on {updatedDate}</sup>
                 </div>
-                <h1>{title}</h1>
-                <summary>{description}</summary>
+                <a className={styles.title} href={`/gists/${id}`}>
+                  <h1>{title}</h1>
+                </a>
+                <summary className={styles.description}>{description}</summary>
               </li>
-            </a>
+            </div>
           );
         })}
       </ul>
     )) || <div className={styles.empty}>No gists exist yet</div>}
-  </Layout>
+  </GistLayout>
 );
 
 export default GistListPage;

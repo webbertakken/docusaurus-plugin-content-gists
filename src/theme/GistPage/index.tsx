@@ -1,80 +1,50 @@
 // @ts-ignore
-import React from "react";
-import type { Language } from "prism-react-renderer";
-import { slugify } from "../../core/utils/slugify";
-import { isLanguageSupported } from "../../core/utils/supportedLanguages";
-import type { Gist } from "../../types";
+import React from 'react'
+import type { Gist } from '../../types'
 // Todo - Use custom CodeBlock from theme using another plugin
 // @ts-ignore
-import styles from "./styles.module.css";
+import styles from './styles.module.css'
 // @ts-ignore
-import CodeBlock from "@theme/CodeBlock";
+import CodeBlock from '@theme/CodeBlock'
 // @ts-ignore
-import Layout from "@theme/Layout";
+import GistLayout from '@theme/GistLayout'
+import { mapGitHubLanguageToPrismLanguage } from '../../core/utils/mapGitHubLanguageToPrismLanguage'
 
 interface Props {
-  gist: Gist;
+  gist: Gist
 }
 
-const mapGitHubLanguageToSupportedLanguage = (
-  rawLanguage: string
-): Language => {
-  const language = slugify(rawLanguage);
-
-  if (isLanguageSupported(language)) return language as Language;
-  if (language.startsWith("git")) return "git";
-  if (language.startsWith("shell")) return "bash";
-  if (language.startsWith("powershell")) return "bash";
-
-  return "bash";
-};
-
 const GistPage = ({ gist }: Props) => {
-  const { created_at, updated_at, files } = gist;
-  const createdDate = new Date(created_at!).toDateString();
-  const updatedDate = new Date(updated_at!).toDateString();
+  const { created_at, updated_at, files } = gist
+  const createdDate = new Date(created_at!).toDateString()
+  const updatedDate = new Date(updated_at!).toDateString()
 
   // Todo - remove exclamation marks
   return (
-    <Layout wrapperClassName={styles.layout}>
+    <GistLayout>
       {Object.values(files!).map((file, index) => {
-        const { language } = file!;
+        const language = mapGitHubLanguageToPrismLanguage(file!.language!)
 
         return (
-          <div key={file!.filename}>
+          <div key={file!.filename} className={styles.file}>
             {index === 0 ? (
-              <h1>{file!.filename}</h1>
+              <h1 className={styles.title}>{file!.filename}</h1>
             ) : (
-              <h2>{file!.filename}</h2>
+              <h2 className={styles.title}>{file!.filename}</h2>
             )}
 
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                paddingTop: "1em",
-              }}
-            >
+            <div className={styles.dates}>
               <sup>Created on {createdDate}</sup>
               <sup>Last updated on {updatedDate}</sup>
             </div>
 
-            {/*<CodeEditor*/}
-            {/*  code={file!.content}*/}
-            {/*  language={mapGitHubLanguageToSupportedLanguage(language!)}*/}
-            {/*/>*/}
-            <CodeBlock
-              language={mapGitHubLanguageToSupportedLanguage(language!)}
-            >
-              {file!.content}
-            </CodeBlock>
-            <div style={{ paddingBottom: "1em" }} />
+            {/*<CodeEditor code={file!.content} language={language} />*/}
+            <CodeBlock language={language}>{file!.content}</CodeBlock>
           </div>
-        );
+        )
       })}
-    </Layout>
-  );
-};
+    </GistLayout>
+  )
+}
 
-export default GistPage;
+export default GistPage
