@@ -1,6 +1,6 @@
 {
   "name": "docusaurus-plugin-content-gists",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Display gists from GitHub as content in Docusaurus",
   "keywords": [
     "cocusaurus",
@@ -31,8 +31,8 @@
   },
   "dependencies": {
     "@docusaurus/core": "2.0.0-beta.21",
-    "@docusaurus/theme-common": "2.0.0-beta.21",
     "@docusaurus/theme-classic": "^2.0.0-beta.21",
+    "@docusaurus/theme-common": "2.0.0-beta.21",
     "@docusaurus/theme-translations": "2.0.0-beta.21",
     "@docusaurus/types": "2.0.0-beta.21",
     "@docusaurus/utils-validation": "^2.0.0-beta.21",
