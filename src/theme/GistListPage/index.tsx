@@ -1,13 +1,13 @@
 // @ts-ignore
-import React from "react";
-import type { Gists } from "../../types";
+import React from 'react'
+import type { Gists } from '../../types'
 // @ts-ignore
-import GistLayout from "@theme/GistLayout";
+import GistLayout from '@theme/GistLayout'
 // @ts-ignore
-import styles from "./styles.module.css";
+import styles from './styles.module.css'
 
 interface Props {
-  gists: Gists;
+  gists: Gists
 }
 
 const GistListPage = ({ gists }: Props) => (
@@ -16,9 +16,9 @@ const GistListPage = ({ gists }: Props) => (
       <ul className={styles.list}>
         <h1>Gists</h1>
         {gists.map(({ id, created_at, updated_at, description, files }) => {
-          const title = Object.values(files)[0]!.filename;
-          const createdDate = new Date(created_at).toDateString();
-          const updatedDate = new Date(updated_at).toDateString();
+          const title = Object.values(files)[0]!.filename
+          const createdDate = new Date(created_at).toDateString()
+          const updatedDate = new Date(updated_at).toDateString()
 
           return (
             <div key={id}>
@@ -33,11 +33,11 @@ const GistListPage = ({ gists }: Props) => (
                 <summary className={styles.description}>{description}</summary>
               </li>
             </div>
-          );
+          )
         })}
       </ul>
     )) || <div className={styles.empty}>No gists exist yet</div>}
   </GistLayout>
-);
+)
 
-export default GistListPage;
+export default GistListPage

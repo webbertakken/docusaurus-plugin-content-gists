@@ -1,0 +1,15 @@
+# Node
+**/node_modules/**
+
+# Docusaurus
+.docusaurus/**
+build/**
+lib/**
+
+# Tests
+coverage/**
+
+# Use stylelint instead
+*.less
+*.css
+*.scss

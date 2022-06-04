@@ -34,12 +34,12 @@ GITHUB_PERSONAL_ACCESS_TOKEN=ghp_your_token_here
 
 ```js
 // Import variables from both system and .env file.
-require("dotenv").config();
+require('dotenv').config()
 
 const config = {
   plugins: [
     [
-      "docusaurus-plugin-content-gists",
+      'docusaurus-plugin-content-gists',
       {
         personalAccessToken: process.env.GITHUB_PERSONAL_ACCESS_TOKEN,
         // The rest is optional
@@ -48,7 +48,7 @@ const config = {
       },
     ],
   ],
-};
+}
 ```
 
 ## Contributing

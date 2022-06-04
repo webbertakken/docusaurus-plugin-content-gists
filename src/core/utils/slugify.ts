@@ -1,5 +1,5 @@
-import { replaceAll } from "./replaceAll";
+import { replaceAll } from './replaceAll'
 
 export const slugify = (name: string) => {
-  return encodeURIComponent(replaceAll(name.toLowerCase(), /[\s_]+/, "-"));
-};
+  return encodeURIComponent(replaceAll(name.toLowerCase(), /[\s_]+/, '-'))
+}
