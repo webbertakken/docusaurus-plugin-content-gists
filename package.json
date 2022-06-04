@@ -23,7 +23,7 @@
     "lib/*"
   ],
   "scripts": {
-    "build": "concurrently yarn:build:plugin yarn:build:theme",
+    "build": "concurrently yarn:build:plugin yarn:build:theme yarn:build:assets",
     "watch": "concurrently \"yarn:build:plugin --watch\" \"yarn:build:theme --watch\" \"yarn:build:assets --watch\"",
     "build:plugin": "tsc",
     "build:theme": "tsc --build tsconfig.theme.json",
