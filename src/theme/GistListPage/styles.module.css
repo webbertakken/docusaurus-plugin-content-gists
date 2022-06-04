@@ -1,0 +1,17 @@
+.layout {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.list {
+  list-style-type: none;
+  list-style-position: inside;
+  padding-inline-start: 0;
+}
+
+.item {
+  background: rgba(0, 0, 0, .1);
+  padding: 20px;
+  margin: 1em 0;
+  border-radius: 5px;
+}

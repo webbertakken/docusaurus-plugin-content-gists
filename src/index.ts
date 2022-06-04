@@ -10,13 +10,21 @@ interface Options extends PluginOptions {
   enabled: boolean;
   verbose: boolean;
   personalAccessToken: string;
+  gistListPageComponent: string;
+  gistPageComponent: string;
 }
 
 export default async function gists(
   context: LoadContext,
   options: Options
 ): Promise<Plugin> {
-  const { enabled, verbose, personalAccessToken } = options;
+  const {
+    enabled,
+    verbose,
+    personalAccessToken,
+    gistListPageComponent,
+    gistPageComponent,
+  } = options;
 
   // Disabled
   if (!enabled) return { name: "docusaurus-plugin-content-gists" };
@@ -57,7 +65,7 @@ export default async function gists(
 
       actions.addRoute({
         path: `/gists`,
-        component: "@site/src/components/pages/Gists/index.tsx",
+        component: gistListPageComponent,
         modules: {
           gists: gistsData,
         },
@@ -75,7 +83,7 @@ export default async function gists(
 
         actions.addRoute({
           path: `/gists/${id}`,
-          component: "@site/src/components/pages/Gists/index.tsx",
+          component: gistPageComponent,
           modules: { gist },
           exact: true,
         });
