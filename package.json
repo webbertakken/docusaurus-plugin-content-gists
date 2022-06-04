@@ -18,6 +18,10 @@
   "private": false,
   "main": "lib/index.js",
   "types": "src/types/index.d.ts",
+  "files": [
+    "src/*",
+    "lib/*"
+  ],
   "scripts": {
     "build": "concurrently yarn:build:plugin yarn:build:theme",
     "watch": "concurrently \"yarn:build:plugin --watch\" \"yarn:build:theme --watch\" \"yarn:build:assets --watch\"",
