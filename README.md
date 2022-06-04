@@ -41,10 +41,9 @@ const config = {
     [
       'docusaurus-plugin-content-gists',
       {
-        personalAccessToken: process.env.GITHUB_PERSONAL_ACCESS_TOKEN,
-        // The rest is optional
         enabled: true,
-        verbose: false,
+        verbose: true,
+        personalAccessToken: process.env.GITHUB_PERSONAL_ACCESS_TOKEN,
       },
     ],
   ],
