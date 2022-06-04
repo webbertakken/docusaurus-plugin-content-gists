@@ -43,6 +43,7 @@ GITHUB_PERSONAL_ACCESS_TOKEN=ghp_your_token_here
 require('dotenv').config()
 
 const config = {
+  // Configure plugin
   plugins: [
     [
       'docusaurus-plugin-content-gists',
@@ -53,6 +54,13 @@ const config = {
       },
     ],
   ],
+
+  // Configure navbar
+  themeConfig: {
+    navbar: {
+      items: [{ to: '/gists', label: 'Gists', position: 'left' }],
+    },
+  },
 }
 ```
 
