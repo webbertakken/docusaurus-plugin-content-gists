@@ -2,6 +2,12 @@
 
 > Use gists as a type of content in Docusaurus.
 
+## Introduction
+
+This plugin adds a page to your Docusaurus instance, displaying all _public_ gists of a GitHub user.
+
+The user is automatically configured based on the (GitHub PAT) token provided.
+
 ## Setup
 
 ### Install dependencies
