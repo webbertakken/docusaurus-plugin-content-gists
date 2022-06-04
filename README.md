@@ -8,6 +8,8 @@ This plugin adds a page to your Docusaurus instance, displaying all _public_ gis
 
 The user is automatically configured based on the (GitHub PAT) token provided.
 
+See it in action on [Takken.io](https://takken.io).
+
 ## Setup
 
 ### Install dependencies
