@@ -1,10 +1,6 @@
-// @ts-ignore
 import React from 'react'
 import type { Gist } from '../../types'
-// Todo - Use custom CodeBlock from theme using another plugin
-// @ts-ignore
 import styles from './styles.module.css'
-// @ts-ignore
 import CodeBlock from '@theme/CodeBlock'
 // @ts-ignore
 import GistLayout from '@theme/GistLayout'
