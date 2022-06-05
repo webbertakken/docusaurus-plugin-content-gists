@@ -1,7 +1,9 @@
+// @ts-ignore
 import React from 'react'
 import type { Gists } from '../../types'
 // @ts-ignore
 import GistLayout from '@theme/GistLayout'
+// @ts-ignore
 import styles from './styles.module.css'
 
 interface Props {
