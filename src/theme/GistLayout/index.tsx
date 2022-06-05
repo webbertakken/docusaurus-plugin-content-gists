@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react'
-// @ts-ignore
+import '../../types'
 import Layout from '@theme/Layout'
-// @ts-ignore
 import styles from './styles.module.css'
 
 interface Props {
