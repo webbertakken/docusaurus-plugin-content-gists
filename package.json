@@ -1,6 +1,6 @@
 {
   "name": "docusaurus-plugin-content-gists",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "Display gists from GitHub as content in Docusaurus",
   "keywords": [
     "cocusaurus",
