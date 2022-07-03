@@ -7,5 +7,6 @@
 
 .container {
   width: 800px;
-  padding: 2em 0;
+  max-width: 100%;
+  padding: 2em 1em;
 }
