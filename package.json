@@ -15,7 +15,6 @@
   "repository": "https://github.com/webbertakken/docusaurus-plugin-content-gists.git",
   "author": "Webber <webber.nl@gmail.com>",
   "license": "MIT",
-  "private": false,
   "main": "lib/index.js",
   "types": "src/types/index.d.ts",
   "files": [
@@ -30,27 +29,31 @@
     "build:assets": "node scripts/copyUntypedFiles.mjs"
   },
   "dependencies": {
-    "@docusaurus/core": "2.0.0-beta.21",
-    "@docusaurus/theme-classic": "^2.0.0-beta.21",
-    "@docusaurus/theme-common": "2.0.0-beta.21",
-    "@docusaurus/theme-translations": "2.0.0-beta.21",
-    "@docusaurus/types": "2.0.0-beta.21",
-    "@docusaurus/utils-validation": "^2.0.0-beta.21",
-    "octokit": "^1.7.1"
+    "@docusaurus/core": "^3.0.1",
+    "@docusaurus/theme-classic": "^3.0.1",
+    "@docusaurus/theme-common": "^3.0.1",
+    "@docusaurus/theme-translations": "^3.0.1",
+    "@docusaurus/types": "^3.0.1",
+    "@docusaurus/utils-validation": "^3.0.1",
+    "octokit": "^1.8.1"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^2.0.0-beta.21",
+    "@docusaurus/module-type-aliases": "^3.0.1",
     "@octokit/types": "^6.34.0",
-    "@types/node": "^17.0.35",
-    "@types/react": "^18.0.10",
+    "@types/node": "^20.10.4",
+    "@types/react": "^18.2.45",
     "chokidar": "^3.5.3",
-    "concurrently": "^7.2.1",
-    "fs-extra": "^10.1.0",
-    "prettier": "^2.6.2",
-    "typescript": "^4.6.4"
+    "concurrently": "^8.2.2",
+    "fs-extra": "^11.2.0",
+    "prettier": "^3.1.1",
+    "typescript": "^5.3.3"
   },
   "peerDependencies": {
-    "react": "^16.8.4||^17.0.0||^18.0.0",
-    "react-dom": "^16.8.4||^17.0.0||^18.0.0"
+    "react": "^17.0.0||^18.0.0||^19.0.0",
+    "react-dom": "*"
+  },
+  "volta": {
+    "node": "20.10.0",
+    "yarn": "3.7.0"
   }
 }
