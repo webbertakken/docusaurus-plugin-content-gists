@@ -18,7 +18,8 @@ When fixing a bug it is fine to submit a pull request right away.
 
 You need the following tools to be installed
 
-- [Volta](https://volta.sh/) or both [Node](https://nodejs.org/) installed at v20 and [Yarn](https://yarnpkg.com/) at v4.
+- [Volta](https://volta.sh/) or both [Node](https://nodejs.org/) installed at v20 and
+  [Yarn](https://yarnpkg.com/) at v4.
 
 ### Plugins
 
