@@ -3,7 +3,7 @@
   "version": "3.0.0",
   "description": "Display gists from GitHub as content in Docusaurus",
   "keywords": [
-    "cocusaurus",
+    "docusaurus",
     "plugin",
     "theme",
     "github",
