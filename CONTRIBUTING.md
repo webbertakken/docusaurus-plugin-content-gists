@@ -16,13 +16,9 @@ When fixing a bug it is fine to submit a pull request right away.
 
 ### Tools
 
-You need the following tools to be installed.
+You need the following tools to be installed
 
-- [Node](https://nodejs.org/) installed at v16.X.
-- [Yarn](https://yarnpkg.com/) at v1.22.4+.
-
-> **Tip:** _Use [nvm](https://github.com/nvm-sh/nvm) or [n](https://github.com/tj/n) or
-> [nodenv](https://github.com/nodenv/nodenv) to manage Node.js versions on your machine._
+- [Volta](https://volta.sh/) or both [Node](https://nodejs.org/) installed at v20 and [Yarn](https://yarnpkg.com/) at v4.
 
 ### Plugins
 

@@ -1,0 +1,48 @@
+name: Main 🚢
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install package manager (from package.json)
+        run: |
+          corepack enable
+          corepack install
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+          cache: 'yarn'
+
+      - name: Install deps
+        run: yarn install --frozen-lockfile --immutable
+
+#      - name: Tests
+#        run: yarn coverage
+
+#      - name: Upload coverage reports to Codecov
+#        uses: codecov/codecov-action@v3
+#        with:
+#          token: ${{ secrets.CODECOV_TOKEN }}
+
+#      - name: Code styles
+#        run: yarn lint
+
+      - name: Formatting
+        run: yarn prettier --check .
+
+#      - name: Typecheck
+#        run: yarn typecheck
+
+      - name: Build
+        run: yarn build
+        env:
+          NODE_ENV: production

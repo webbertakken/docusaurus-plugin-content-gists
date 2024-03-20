@@ -1,6 +1,6 @@
 {
   "name": "docusaurus-plugin-content-gists",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Display gists from GitHub as content in Docusaurus",
   "keywords": [
     "docusaurus",
@@ -29,26 +29,26 @@
     "build:assets": "node scripts/copyUntypedFiles.mjs"
   },
   "dependencies": {
-    "@docusaurus/core": "^3.0.1",
-    "@docusaurus/theme-classic": "^3.0.1",
-    "@docusaurus/theme-common": "^3.0.1",
-    "@docusaurus/theme-translations": "^3.0.1",
-    "@docusaurus/types": "^3.0.1",
-    "@docusaurus/utils-validation": "^3.0.1",
-    "octokit": "^1.8.1"
+    "@docusaurus/core": "^3.1.1",
+    "@docusaurus/theme-classic": "^3.1.1",
+    "@docusaurus/theme-common": "^3.1.1",
+    "@docusaurus/theme-translations": "^3.1.1",
+    "@docusaurus/types": "^3.1.1",
+    "@docusaurus/utils-validation": "^3.1.1",
+    "octokit": "^3.1.2"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.0.1",
-    "@docusaurus/tsconfig": "^3.0.1",
-    "@docusaurus/types": "^3.0.1",
-    "@octokit/types": "^6.34.0",
-    "@types/node": "^20.10.4",
-    "@types/react": "^18.2.45",
-    "chokidar": "^3.5.3",
+    "@docusaurus/module-type-aliases": "^3.1.1",
+    "@docusaurus/tsconfig": "^3.1.1",
+    "@docusaurus/types": "^3.1.1",
+    "@octokit/types": "^12.6.0",
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.2.67",
+    "chokidar": "^3.6.0",
     "concurrently": "^8.2.2",
     "fs-extra": "^11.2.0",
-    "prettier": "^3.1.1",
-    "typescript": "^5.3.3",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.2",
     "yalc": "^1.0.0-pre.53"
   },
   "peerDependencies": {
@@ -56,7 +56,8 @@
     "react-dom": "*"
   },
   "volta": {
-    "node": "20.10.0",
-    "yarn": "3.7.0"
-  }
+    "node": "20.11.1",
+    "yarn": "4.1.1"
+  },
+  "packageManager": "yarn@4.1.1"
 }
