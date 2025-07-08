@@ -10,13 +10,26 @@ interface Props {
   gists: Gists
 }
 
+// Sanitize user-generated content to prevent XSS
+const sanitizeText = (text: string | null | undefined): string => {
+  if (!text) return ''
+  // Basic HTML entity encoding for safety
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
 const GistListPage = ({ gists }: Props) => (
   <GistLayout>
     {(gists.length >= 1 && (
       <ul className={styles.list}>
         <h1>Gists</h1>
         {gists.map(({ id, created_at, updated_at, description, files }) => {
-          const title = Object.values(files)[0]!.filename
+          const file = Object.values(files)[0]
+          const title = file ? sanitizeText(file.filename) : 'Untitled'
           const createdDate = new Date(created_at).toDateString()
           const updatedDate = new Date(updated_at).toDateString()
 
@@ -30,7 +43,7 @@ const GistListPage = ({ gists }: Props) => (
                 <a className={styles.title} href={`/gists/${id}`}>
                   <h1>{title}</h1>
                 </a>
-                <summary className={styles.description}>{description}</summary>
+                <summary className={styles.description}>{sanitizeText(description)}</summary>
               </li>
             </div>
           )

@@ -9,15 +9,20 @@ const defaults = {
 }
 
 export const Schema = Joi.object({
-  enabled: Joi.string()
-    .equal(true, false)
+  enabled: Joi.boolean()
     .default(defaults.enabled)
     .label('Whether the plugin is enabled or not.'),
-  verbose: Joi.string()
-    .equal(true, false)
+  verbose: Joi.boolean()
     .default(defaults.verbose)
     .label('Verbose output during build phase'),
-  personalAccessToken: Joi.string().required().label('GitHub Personal Access Token'),
+  personalAccessToken: Joi.string()
+    .required()
+    .min(1)
+    .pattern(/^(ghp_[a-zA-Z0-9]{36}|github_pat_[a-zA-Z0-9]{22}_[a-zA-Z0-9]{59})$/)
+    .label('GitHub Personal Access Token')
+    .messages({
+      'string.pattern.base': 'Personal Access Token must be a valid GitHub token format (ghp_* or github_pat_*)'
+    }),
   gistPageComponent: Joi.string()
     .default(defaults.gistPageComponent)
     .label('The component for the page that shows the gist'),
