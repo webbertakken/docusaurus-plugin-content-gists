@@ -9,18 +9,19 @@ type Content = {
 interface Options extends PluginOptions {
   enabled: boolean
   verbose: boolean
-  personalAccessToken: string
   gistListPageComponent: string
   gistPageComponent: string
 }
 
 export default async function gists(context: LoadContext, options: Options): Promise<Plugin> {
-  const { enabled, verbose, personalAccessToken, gistListPageComponent, gistPageComponent } =
-    options
+  const { enabled, verbose, gistListPageComponent, gistPageComponent } = options
 
   // Disabled
   if (!enabled) return { name: 'docusaurus-plugin-content-gists' }
 
+  // Get token from environment during build time only - never from options
+  const personalAccessToken = process.env.GH_PERSONAL_ACCESS_TOKEN
+  
   // Validate token exists and is not empty
   if (!personalAccessToken || personalAccessToken.trim() === '') {
     throw new Error('GitHub Personal Access Token is required but not provided')

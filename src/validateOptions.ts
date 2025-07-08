@@ -15,14 +15,6 @@ export const Schema = Joi.object({
   verbose: Joi.boolean()
     .default(defaults.verbose)
     .label('Verbose output during build phase'),
-  personalAccessToken: Joi.string()
-    .required()
-    .min(1)
-    .pattern(/^(ghp_[a-zA-Z0-9]{36}|github_pat_[a-zA-Z0-9]{22}_[a-zA-Z0-9]{59})$/)
-    .label('GitHub Personal Access Token')
-    .messages({
-      'string.pattern.base': 'Personal Access Token must be a valid GitHub token format (ghp_* or github_pat_*)'
-    }),
   gistPageComponent: Joi.string()
     .default(defaults.gistPageComponent)
     .label('The component for the page that shows the gist'),
@@ -35,5 +27,13 @@ export function validateOptions({
   validate,
   options,
 }: OptionValidationContext<ValidationSchema<PluginOptions>, PluginOptions>) {
+  // Check if token is provided in environment variable
+  const hasTokenInEnv = process.env.GH_PERSONAL_ACCESS_TOKEN
+  
+  if (!hasTokenInEnv) {
+    // If no token in environment, throw a clear error
+    throw new Error('GitHub Personal Access Token is required but not provided. Please set GH_PERSONAL_ACCESS_TOKEN environment variable.')
+  }
+  
   return validate(Schema, options)
 }
