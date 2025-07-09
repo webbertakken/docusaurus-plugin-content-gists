@@ -50,13 +50,16 @@ export default async function gists(context: LoadContext, options: Options): Pro
 
   const api = new GitHub({ personalAccessToken })
 
-  // Runtime options (safe to send to client)
+  // Runtime options (safe to send to client) - exclude sensitive data
   const runtimeOptions: RuntimeOptions = {
     enabled,
     verbose,
     gistListPageComponent: defaults.gistListPageComponent,
     gistPageComponent: defaults.gistPageComponent,
   }
+  
+  // Note: personalAccessToken is intentionally excluded from runtimeOptions
+  // to prevent it from being bundled in client code
 
   return {
     name: 'docusaurus-plugin-content-gists',
@@ -67,6 +70,23 @@ export default async function gists(context: LoadContext, options: Options): Pro
 
     getTypeScriptThemePath() {
       return '../src/theme'
+    },
+
+    // Configure webpack to exclude sensitive data from client builds
+    configureWebpack(config: any, isServer: boolean) {
+      if (!isServer) {
+        // Use DefinePlugin to replace sensitive environment variables with undefined
+        const webpack = require('webpack')
+        config.plugins = config.plugins || []
+        config.plugins.push(
+          new webpack.DefinePlugin({
+            // Remove sensitive data from client bundle
+            'process.env.GH_PERSONAL_ACCESS_TOKEN': JSON.stringify(undefined),
+            'process.env.GITHUB_TOKEN': JSON.stringify(undefined),
+          })
+        )
+      }
+      return config
     },
 
     // Build-time data fetching (server-side only)
