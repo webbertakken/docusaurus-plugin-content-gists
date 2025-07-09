@@ -9,19 +9,32 @@ type Content = {
 interface Options extends PluginOptions {
   enabled: boolean
   verbose: boolean
+}
+
+// Runtime configuration (safe to send to client)
+interface RuntimeOptions {
+  enabled: boolean
+  verbose: boolean
   gistListPageComponent: string
   gistPageComponent: string
 }
 
+const defaults = {
+  enabled: true,
+  verbose: false,
+  gistPageComponent: '@theme/GistPage',
+  gistListPageComponent: '@theme/GistListPage',
+}
+
 export default async function gists(context: LoadContext, options: Options): Promise<Plugin> {
-  const { enabled, verbose, gistListPageComponent, gistPageComponent } = options
+  const { enabled, verbose } = options
+  
+  // Get token from environment during build time only - never from options
+  const personalAccessToken = process.env.GH_PERSONAL_ACCESS_TOKEN
 
   // Disabled
   if (!enabled) return { name: 'docusaurus-plugin-content-gists' }
 
-  // Get token from environment during build time only - never from options
-  const personalAccessToken = process.env.GH_PERSONAL_ACCESS_TOKEN
-  
   // Validate token exists and is not empty
   if (!personalAccessToken || personalAccessToken.trim() === '') {
     throw new Error('GitHub Personal Access Token is required but not provided')
@@ -32,6 +45,14 @@ export default async function gists(context: LoadContext, options: Options): Pro
   if (verbose) console.log(`Using GitHub token: ${maskedToken}`)
 
   const api = new GitHub({ personalAccessToken })
+
+  // Runtime options (safe to send to client)
+  const runtimeOptions: RuntimeOptions = {
+    enabled,
+    verbose,
+    gistListPageComponent: defaults.gistListPageComponent,
+    gistPageComponent: defaults.gistPageComponent,
+  }
 
   return {
     name: 'docusaurus-plugin-content-gists',
@@ -44,6 +65,7 @@ export default async function gists(context: LoadContext, options: Options): Pro
       return '../src/theme'
     },
 
+    // Build-time data fetching (server-side only)
     async loadContent(): Promise<Content> {
       if (verbose) console.log('--- Gists ---')
 
@@ -56,6 +78,7 @@ export default async function gists(context: LoadContext, options: Options): Pro
       return { gists }
     },
 
+    // Build-time route generation
     async contentLoaded({ content, actions }) {
       const { gists } = content as { gists: Gists }
 
@@ -64,7 +87,7 @@ export default async function gists(context: LoadContext, options: Options): Pro
 
       actions.addRoute({
         path: `/gists`,
-        component: gistListPageComponent,
+        component: runtimeOptions.gistListPageComponent,
         modules: {
           gists: gistsData,
         },
@@ -89,7 +112,7 @@ export default async function gists(context: LoadContext, options: Options): Pro
 
               actions.addRoute({
                 path: `/gists/${id}`,
-                component: gistPageComponent,
+                component: runtimeOptions.gistPageComponent,
                 modules: { gist },
                 exact: true,
               })
@@ -102,6 +125,7 @@ export default async function gists(context: LoadContext, options: Options): Pro
         )
       }
     },
+
   }
 }
 

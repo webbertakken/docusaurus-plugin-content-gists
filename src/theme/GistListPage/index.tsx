@@ -1,10 +1,11 @@
 // @ts-ignore
-import React from 'react'
+import React, { useEffect } from 'react'
 import type { Gists } from '../../types'
 // @ts-ignore
 import GistLayout from '@theme/GistLayout'
 // @ts-ignore
 import styles from './styles.module.css'
+import { createGistsClient } from '../../client/index'
 
 interface Props {
   gists: Gists
@@ -22,7 +23,19 @@ const sanitizeText = (text: string | null | undefined): string => {
     .replace(/'/g, '&#039;')
 }
 
-const GistListPage = ({ gists }: Props) => (
+const GistListPage = ({ gists }: Props) => {
+  // Get runtime config from environment (set by webpack)
+  const runtimeConfig = typeof window !== 'undefined' && (window as any).GISTS_CONFIG
+  const client = runtimeConfig ? createGistsClient(runtimeConfig) : null
+
+  useEffect(() => {
+    // Client-side analytics or tracking
+    if (client && client.isVerbose()) {
+      console.log('Gist list page loaded')
+    }
+  }, [client])
+
+  return (
   <GistLayout>
     {(gists.length >= 1 && (
       <ul className={styles.list}>
@@ -40,7 +53,11 @@ const GistListPage = ({ gists }: Props) => (
                   <sup>Created on {createdDate}</sup>
                   <sup>Last updated on {updatedDate}</sup>
                 </div>
-                <a className={styles.title} href={`/gists/${id}`}>
+                <a 
+                  className={styles.title} 
+                  href={client ? client.getGistUrl(id) : `/gists/${id}`}
+                  onClick={() => client?.trackGistView(id)}
+                >
                   <h1>{title}</h1>
                 </a>
                 <summary className={styles.description}>{sanitizeText(description)}</summary>
@@ -51,6 +68,7 @@ const GistListPage = ({ gists }: Props) => (
       </ul>
     )) || <div className={styles.empty}>No gists exist yet</div>}
   </GistLayout>
-)
+  )
+}
 
 export default GistListPage
