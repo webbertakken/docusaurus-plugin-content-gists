@@ -9,6 +9,7 @@ type Content = {
 interface Options extends PluginOptions {
   enabled: boolean
   verbose: boolean
+  personalAccessToken?: string
 }
 
 // Runtime configuration (safe to send to client)
@@ -27,10 +28,10 @@ const defaults = {
 }
 
 export default async function gists(context: LoadContext, options: Options): Promise<Plugin> {
-  const { enabled, verbose } = options
-  
-  // Get token from environment during build time only - never from options
-  const personalAccessToken = process.env.GH_PERSONAL_ACCESS_TOKEN
+  const { enabled, verbose, personalAccessToken } = options
+
+  // Token should be passed as process.env.GH_PERSONAL_ACCESS_TOKEN in options during build time
+  // This keeps it secure since it's only available during build, not in client code
 
   // Disabled
   if (!enabled) return { name: 'docusaurus-plugin-content-gists' }
@@ -41,7 +42,10 @@ export default async function gists(context: LoadContext, options: Options): Pro
   }
 
   // Mask token for logging purposes
-  const maskedToken = personalAccessToken.substring(0, 4) + '...' + personalAccessToken.substring(personalAccessToken.length - 4)
+  const maskedToken =
+    personalAccessToken.substring(0, 4) +
+    '...' +
+    personalAccessToken.substring(personalAccessToken.length - 4)
   if (verbose) console.log(`Using GitHub token: ${maskedToken}`)
 
   const api = new GitHub({ personalAccessToken })
@@ -98,17 +102,14 @@ export default async function gists(context: LoadContext, options: Options): Pro
       const maxConcurrent = 5 // Process gists in batches to avoid overwhelming the API
       for (let i = 0; i < gists.length; i += maxConcurrent) {
         const batch = gists.slice(i, i + maxConcurrent)
-        
+
         await Promise.all(
           batch.map(async (gistMeta) => {
             const id = gistMeta.id
-            
+
             try {
               const gistData = await api.getGist(id)
-              const gist = await actions.createData(
-                `gist-${id}.json`,
-                JSON.stringify(gistData),
-              )
+              const gist = await actions.createData(`gist-${id}.json`, JSON.stringify(gistData))
 
               actions.addRoute({
                 path: `/gists/${id}`,
@@ -121,11 +122,10 @@ export default async function gists(context: LoadContext, options: Options): Pro
               console.error(`Failed to process gist ${id}: ${message}`)
               // Continue processing other gists even if one fails
             }
-          })
+          }),
         )
       }
     },
-
   }
 }
 
