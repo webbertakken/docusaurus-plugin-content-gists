@@ -11,7 +11,6 @@ const defaults = {
 export const Schema = Joi.object({
   enabled: Joi.boolean().default(defaults.enabled).label('Whether the plugin is enabled or not.'),
   verbose: Joi.boolean().default(defaults.verbose).label('Verbose output during build phase'),
-  personalAccessToken: Joi.string().label('GitHub Personal Access Token for API access'),
   gistPageComponent: Joi.string()
     .default(defaults.gistPageComponent)
     .label('The component for the page that shows the gist'),

@@ -9,7 +9,6 @@ type Content = {
 interface Options extends PluginOptions {
   enabled: boolean
   verbose: boolean
-  personalAccessToken?: string
 }
 
 // Runtime configuration (safe to send to client)
@@ -28,10 +27,10 @@ const defaults = {
 }
 
 export default async function gists(context: LoadContext, options: Options): Promise<Plugin> {
-  const { enabled, verbose, personalAccessToken } = options
+  const { enabled, verbose } = options
 
-  // Token should be passed as process.env.GH_PERSONAL_ACCESS_TOKEN in options during build time
-  // This keeps it secure since it's only available during build, not in client code
+  // Get token from environment during build time only
+  const personalAccessToken = process.env.GH_PERSONAL_ACCESS_TOKEN
 
   // Disabled
   if (!enabled) return { name: 'docusaurus-plugin-content-gists' }
@@ -57,7 +56,7 @@ export default async function gists(context: LoadContext, options: Options): Pro
     gistListPageComponent: defaults.gistListPageComponent,
     gistPageComponent: defaults.gistPageComponent,
   }
-  
+
   // Note: personalAccessToken is intentionally excluded from runtimeOptions
   // to prevent it from being bundled in client code
 
@@ -72,22 +71,6 @@ export default async function gists(context: LoadContext, options: Options): Pro
       return '../src/theme'
     },
 
-    // Configure webpack to exclude sensitive data from client builds
-    configureWebpack(config: any, isServer: boolean) {
-      if (!isServer) {
-        // Use DefinePlugin to replace sensitive environment variables with undefined
-        const webpack = require('webpack')
-        config.plugins = config.plugins || []
-        config.plugins.push(
-          new webpack.DefinePlugin({
-            // Remove sensitive data from client bundle
-            'process.env.GH_PERSONAL_ACCESS_TOKEN': JSON.stringify(undefined),
-            'process.env.GITHUB_TOKEN': JSON.stringify(undefined),
-          })
-        )
-      }
-      return config
-    },
 
     // Build-time data fetching (server-side only)
     async loadContent(): Promise<Content> {
