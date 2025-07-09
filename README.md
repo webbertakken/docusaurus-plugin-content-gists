@@ -12,9 +12,11 @@ See it in action on [Takken.io](https://takken.io).
 
 ## ⚠️ Security Update (v4.0.0+)
 
-**Breaking Change:** For security reasons, the `personalAccessToken` option has been removed. The GitHub token must now be provided via the `GH_PERSONAL_ACCESS_TOKEN` environment variable only.
+**Breaking Change:** For security reasons, the `personalAccessToken` option has been removed. The
+GitHub token must now be provided via the `GH_PERSONAL_ACCESS_TOKEN` environment variable only.
 
 If you're upgrading from a previous version:
+
 1. Remove `personalAccessToken` from your plugin configuration
 2. Ensure `GH_PERSONAL_ACCESS_TOKEN` is set in your environment
 
@@ -75,17 +77,21 @@ const config = {
 
 ### Authentication
 
-The plugin requires a GitHub Personal Access Token to fetch gists. For security reasons, this token must be provided via the `GH_PERSONAL_ACCESS_TOKEN` environment variable.
+The plugin requires a GitHub Personal Access Token to fetch gists. For security reasons, this token
+must be provided via the `GH_PERSONAL_ACCESS_TOKEN` environment variable.
 
 #### Creating a GitHub Personal Access Token
 
-1. Go to GitHub Settings → Developer settings → Personal access tokens → [Tokens (classic)](https://github.com/settings/tokens)
+1. Go to GitHub Settings → Developer settings → Personal access tokens →
+   [Tokens (classic)](https://github.com/settings/tokens)
 2. Click "Generate new token" → "Generate new token (classic)"
 3. Give it a descriptive name (e.g., "Docusaurus Gists Plugin")
 4. Select the `gist` scope (read access to gists)
 5. Click "Generate token" and copy the token
 
-> **Security Notice:** Never pass the token directly through plugin options. Always use environment variables to prevent accidental exposure of your GitHub credentials in your codebase or build artifacts.
+> **Security Notice:** Never pass the token directly through plugin options. Always use environment
+> variables to prevent accidental exposure of your GitHub credentials in your codebase or build
+> artifacts.
 
 ### Options
 

@@ -59,11 +59,11 @@ export default class GitHub {
     try {
       const response = await this.instance.rest.gists.list({
         per_page: this.maxGists,
-        page: 1
+        page: 1,
       })
 
       const publicGists = response.data.filter((gist) => gist.public === true)
-      
+
       if (publicGists.length === this.maxGists) {
         console.warn(`Gist limit of ${this.maxGists} reached. Some gists may not be included.`)
       }

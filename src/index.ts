@@ -71,7 +71,6 @@ export default async function gists(context: LoadContext, options: Options): Pro
       return '../src/theme'
     },
 
-
     // Build-time data fetching (server-side only)
     async loadContent(): Promise<Content> {
       if (verbose) console.log('--- Gists ---')

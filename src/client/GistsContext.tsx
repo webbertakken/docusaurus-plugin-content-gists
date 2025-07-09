@@ -16,11 +16,7 @@ interface GistsProviderProps {
 export function GistsProvider({ children, config }: GistsProviderProps) {
   const client = new GistsClient(config)
 
-  return (
-    <GistsContext.Provider value={{ client, config }}>
-      {children}
-    </GistsContext.Provider>
-  )
+  return <GistsContext.Provider value={{ client, config }}>{children}</GistsContext.Provider>
 }
 
 export function useGists() {
