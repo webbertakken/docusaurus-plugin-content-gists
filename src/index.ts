@@ -9,19 +9,56 @@ type Content = {
 interface Options extends PluginOptions {
   enabled: boolean
   verbose: boolean
-  personalAccessToken: string
+}
+
+// Runtime configuration (safe to send to client)
+interface RuntimeOptions {
+  enabled: boolean
+  verbose: boolean
   gistListPageComponent: string
   gistPageComponent: string
 }
 
+const defaults = {
+  enabled: true,
+  verbose: false,
+  gistPageComponent: '@theme/GistPage',
+  gistListPageComponent: '@theme/GistListPage',
+}
+
 export default async function gists(context: LoadContext, options: Options): Promise<Plugin> {
-  const { enabled, verbose, personalAccessToken, gistListPageComponent, gistPageComponent } =
-    options
+  const { enabled, verbose } = options
+
+  // Get token from environment during build time only
+  const personalAccessToken = process.env.GH_PERSONAL_ACCESS_TOKEN
 
   // Disabled
   if (!enabled) return { name: 'docusaurus-plugin-content-gists' }
 
+  // Validate token exists and is not empty
+  if (!personalAccessToken || personalAccessToken.trim() === '') {
+    throw new Error('GitHub Personal Access Token is required but not provided')
+  }
+
+  // Mask token for logging purposes
+  const maskedToken =
+    personalAccessToken.substring(0, 4) +
+    '...' +
+    personalAccessToken.substring(personalAccessToken.length - 4)
+  if (verbose) console.log(`Using GitHub token: ${maskedToken}`)
+
   const api = new GitHub({ personalAccessToken })
+
+  // Runtime options (safe to send to client) - exclude sensitive data
+  const runtimeOptions: RuntimeOptions = {
+    enabled,
+    verbose,
+    gistListPageComponent: defaults.gistListPageComponent,
+    gistPageComponent: defaults.gistPageComponent,
+  }
+
+  // Note: personalAccessToken is intentionally excluded from runtimeOptions
+  // to prevent it from being bundled in client code
 
   return {
     name: 'docusaurus-plugin-content-gists',
@@ -34,18 +71,20 @@ export default async function gists(context: LoadContext, options: Options): Pro
       return '../src/theme'
     },
 
+    // Build-time data fetching (server-side only)
     async loadContent(): Promise<Content> {
       if (verbose) console.log('--- Gists ---')
 
       const user = await api.getUsername()
-      if (verbose) console.log(`Retrieving ${user}'s public gists.`)
+      if (verbose) console.log(`Retrieving public gists.`)
 
       const gists = await api.getMyGists()
-      console.log(`Found ${gists.length} public gists for ${user}.`)
+      if (verbose) console.log(`Found ${gists.length} public gists.`)
 
       return { gists }
     },
 
+    // Build-time route generation
     async contentLoaded({ content, actions }) {
       const { gists } = content as { gists: Gists }
 
@@ -54,7 +93,7 @@ export default async function gists(context: LoadContext, options: Options): Pro
 
       actions.addRoute({
         path: `/gists`,
-        component: gistListPageComponent,
+        component: runtimeOptions.gistListPageComponent,
         modules: {
           gists: gistsData,
         },
@@ -62,20 +101,31 @@ export default async function gists(context: LoadContext, options: Options): Pro
       })
 
       // Pages
-      for (const gistMeta of gists) {
-        const id = gistMeta.id
+      const maxConcurrent = 5 // Process gists in batches to avoid overwhelming the API
+      for (let i = 0; i < gists.length; i += maxConcurrent) {
+        const batch = gists.slice(i, i + maxConcurrent)
 
-        const gist = await actions.createData(
-          `gist-${id}.json`,
-          JSON.stringify(await api.getGist(id)),
+        await Promise.all(
+          batch.map(async (gistMeta) => {
+            const id = gistMeta.id
+
+            try {
+              const gistData = await api.getGist(id)
+              const gist = await actions.createData(`gist-${id}.json`, JSON.stringify(gistData))
+
+              actions.addRoute({
+                path: `/gists/${id}`,
+                component: runtimeOptions.gistPageComponent,
+                modules: { gist },
+                exact: true,
+              })
+            } catch (error) {
+              const message = error instanceof Error ? error.message : 'Unknown error'
+              console.error(`Failed to process gist ${id}: ${message}`)
+              // Continue processing other gists even if one fails
+            }
+          }),
         )
-
-        actions.addRoute({
-          path: `/gists/${id}`,
-          component: gistPageComponent,
-          modules: { gist },
-          exact: true,
-        })
       }
     },
   }

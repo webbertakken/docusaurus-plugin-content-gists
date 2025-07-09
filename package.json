@@ -1,6 +1,6 @@
 {
   "name": "docusaurus-plugin-content-gists",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "description": "Display gists from GitHub as content in Docusaurus",
   "keywords": [
     "docusaurus",
@@ -35,6 +35,7 @@
     "@docusaurus/theme-translations": "^3.1.1",
     "@docusaurus/types": "^3.1.1",
     "@docusaurus/utils-validation": "^3.1.1",
+    "@octokit/plugin-throttling": "^11.0.1",
     "octokit": "^3.1.2"
   },
   "devDependencies": {

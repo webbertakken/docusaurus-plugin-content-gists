@@ -10,6 +10,16 @@ The user is automatically configured based on the (GitHub PAT) token provided.
 
 See it in action on [Takken.io](https://takken.io).
 
+## ⚠️ Security Update (v4.0.0+)
+
+**Breaking Change:** For security reasons, the `personalAccessToken` option has been removed. The
+GitHub token must now be provided via the `GH_PERSONAL_ACCESS_TOKEN` environment variable only.
+
+If you're upgrading from a previous version:
+
+1. Remove `personalAccessToken` from your plugin configuration
+2. Ensure `GH_PERSONAL_ACCESS_TOKEN` is set in your environment
+
 ## Setup
 
 ### Install dependencies
@@ -35,7 +45,7 @@ yarn add dotenv docusaurus-plugin-content-gists
 #### `.env`
 
 ```env
-GITHUB_PERSONAL_ACCESS_TOKEN=ghp_your_token_here
+GH_PERSONAL_ACCESS_TOKEN=ghp_your_token_here
 ```
 
 #### `docusaurus.config.js`
@@ -52,7 +62,6 @@ const config = {
       {
         enabled: true,
         verbose: true,
-        personalAccessToken: process.env.GITHUB_PERSONAL_ACCESS_TOKEN,
       },
     ],
   ],
@@ -66,17 +75,25 @@ const config = {
 }
 ```
 
+### Authentication
+
+The plugin requires a GitHub Personal Access Token to fetch gists. For security reasons, this token
+must be provided via the `GH_PERSONAL_ACCESS_TOKEN` environment variable.
+
+#### Creating a GitHub Personal Access Token
+
+1. Go to GitHub Settings → Developer settings → Personal access tokens →
+   [Tokens (classic)](https://github.com/settings/tokens)
+2. Click "Generate new token" → "Generate new token (classic)"
+3. Give it a descriptive name (e.g., "Docusaurus Gists Plugin")
+4. Select the `gist` scope (read access to gists)
+5. Click "Generate token" and copy the token
+
+> **Security Notice:** Never pass the token directly through plugin options. Always use environment
+> variables to prevent accidental exposure of your GitHub credentials in your codebase or build
+> artifacts.
+
 ### Options
-
-#### `personalAccessToken`
-
-Personal access token of the user of whom to get the gists.
-
-> **Important:** We recommend you use an environment variable like `GITHUB_PERSONAL_ACCESS_TOKEN`.
->
-> That way you do not risk accidentally exposing access to your GitHub account.
-
-_**required:** `true`_
 
 #### `enabled`
 
