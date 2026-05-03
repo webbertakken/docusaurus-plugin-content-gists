@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 8
+  version: 9
   cacheKey: 10
 
 "@ampproject/remapping@npm:^2.2.0":
@@ -5238,6 +5238,11 @@ __metadata:
   peerDependencies:
     react: ^17.0.0||^18.0.0||^19.0.0
     react-dom: "*"
+  dependenciesMeta:
+    core-js:
+      built: true
+    core-js-pure:
+      built: true
   languageName: unknown
   linkType: soft
 
