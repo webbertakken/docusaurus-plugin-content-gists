@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode } from 'react'
+import React, { createContext, useContext, useMemo, ReactNode } from 'react'
 import { GistsClient, RuntimeConfig } from './index'
 
 interface GistsContextType {
@@ -14,9 +14,12 @@ interface GistsProviderProps {
 }
 
 export function GistsProvider({ children, config }: GistsProviderProps) {
-  const client = new GistsClient(config)
+  const value = useMemo<GistsContextType>(
+    () => ({ client: new GistsClient(config), config }),
+    [config],
+  )
 
-  return <GistsContext.Provider value={{ client, config }}>{children}</GistsContext.Provider>
+  return <GistsContext.Provider value={value}>{children}</GistsContext.Provider>
 }
 
 export function useGists() {

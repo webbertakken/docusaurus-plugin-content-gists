@@ -75,21 +75,23 @@ export default async function gists(context: LoadContext, options: Options): Pro
     async loadContent(): Promise<Content> {
       if (verbose) console.log('--- Gists ---')
 
-      const user = await api.getUsername()
-      if (verbose) console.log(`Retrieving public gists.`)
+      if (verbose) {
+        const user = await api.getUsername()
+        console.log(`Retrieving public gists for ${user ?? 'authenticated user'}.`)
+      }
 
-      const gists = await api.getMyGists()
-      if (verbose) console.log(`Found ${gists.length} public gists.`)
+      const loadedGists = await api.getMyGists()
+      if (verbose) console.log(`Found ${loadedGists.length} public gists.`)
 
-      return { gists }
+      return { gists: loadedGists }
     },
 
     // Build-time route generation
     async contentLoaded({ content, actions }) {
-      const { gists } = content as { gists: Gists }
+      const { gists: loadedGists } = content as { gists: Gists }
 
       // Index
-      const gistsData = await actions.createData(`gists-index.json`, JSON.stringify(gists))
+      const gistsData = await actions.createData(`gists-index.json`, JSON.stringify(loadedGists))
 
       actions.addRoute({
         path: `/gists`,
@@ -100,11 +102,14 @@ export default async function gists(context: LoadContext, options: Options): Pro
         exact: true,
       })
 
-      // Pages
-      const maxConcurrent = 5 // Process gists in batches to avoid overwhelming the API
-      for (let i = 0; i < gists.length; i += maxConcurrent) {
-        const batch = gists.slice(i, i + maxConcurrent)
+      // Pages: process gists in batches to avoid overwhelming the API.
+      // Sequential `await` between batches is intentional — it's the
+      // throttle that prevents hitting GitHub's rate limit.
+      const maxConcurrent = 5
+      for (let i = 0; i < loadedGists.length; i += maxConcurrent) {
+        const batch = loadedGists.slice(i, i + maxConcurrent)
 
+        // eslint-disable-next-line no-await-in-loop -- intentional throttle
         await Promise.all(
           batch.map(async (gistMeta) => {
             const id = gistMeta.id

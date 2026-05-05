@@ -6,6 +6,12 @@ type Props = {
   personalAccessToken: string
 }
 
+// Structural alias for the throttle callback's `options` argument. The
+// library types it as `Required<EndpointDefaults>`; we only read `method`
+// and `url`. The current retry count is the 4th callback parameter
+// (a `number`), not a property on `options.request`.
+type ThrottleEndpoint = { method: string; url: string }
+
 const OctokitWithThrottling = Octokit.plugin(throttling)
 
 export default class GitHub {
@@ -17,16 +23,18 @@ export default class GitHub {
     this.instance = new OctokitWithThrottling({
       auth,
       throttle: {
-        onRateLimit: (retryAfter: number, options: any) => {
-          console.warn(`Request quota exhausted for request ${options.method} ${options.url}`)
-          if (options.request.retryCount === 0) {
+        onRateLimit: (retryAfter, options, _octokit, retryCount) => {
+          const o = options as unknown as ThrottleEndpoint
+          console.warn(`Request quota exhausted for request ${o.method} ${o.url}`)
+          if (retryCount === 0) {
             console.log(`Retrying after ${retryAfter} seconds!`)
             return true
           }
           return false
         },
-        onSecondaryRateLimit: (retryAfter: number, options: any) => {
-          console.warn(`Secondary rate limit detected for request ${options.method} ${options.url}`)
+        onSecondaryRateLimit: (_retryAfter, options) => {
+          const o = options as unknown as ThrottleEndpoint
+          console.warn(`Secondary rate limit detected for request ${o.method} ${o.url}`)
           return false
         },
       },
@@ -40,7 +48,9 @@ export default class GitHub {
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error'
       console.error('Failed to authenticate with GitHub:', message)
-      throw new Error('GitHub authentication failed. Please check your Personal Access Token.')
+      throw new Error('GitHub authentication failed. Please check your Personal Access Token.', {
+        cause: error,
+      })
     }
   }
 
@@ -88,7 +98,7 @@ export default class GitHub {
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error'
       console.error(`Failed to fetch gist ${id}:`, message)
-      throw new Error(`Failed to fetch gist: ${message}`)
+      throw new Error(`Failed to fetch gist: ${message}`, { cause: error })
     }
   }
 }

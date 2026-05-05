@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2016",
+    "target": "es2022",
     "module": "commonjs",
     "skipLibCheck": true,
     "noEmit": false,
@@ -39,7 +39,6 @@
     /* Handled by ESLint */
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "importsNotUsedAsValues": "remove",
 
     /* Module Resolution */
     "moduleResolution": "node",
@@ -48,7 +47,8 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "allowJs": true
+    "allowJs": true,
+    "types": ["node"]
   },
   "include": ["src"],
   "exclude": [
@@ -58,6 +58,8 @@
     "**/coverage/**",
     "**/lib/**/*",
     "**/__mocks__/**/*",
-    "**/__fixtures__/**/*"
+    "**/__fixtures__/**/*",
+    "**/*.test.ts",
+    "**/*.test.tsx"
   ]
 }
