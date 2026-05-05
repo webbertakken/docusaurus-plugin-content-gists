@@ -5,10 +5,14 @@ import type { Gists } from '../../types'
 import GistLayout from '@theme/GistLayout'
 // @ts-ignore
 import styles from './styles.module.css'
-import { createGistsClient } from '../../client/index'
+import { createGistsClient, RuntimeConfig } from '../../client/index'
 
 interface Props {
   gists: Gists
+}
+
+interface GistsConfigWindow extends Window {
+  GISTS_CONFIG?: RuntimeConfig
 }
 
 // Sanitize user-generated content to prevent XSS
@@ -25,7 +29,8 @@ const sanitizeText = (text: string | null | undefined): string => {
 
 const GistListPage = ({ gists }: Props) => {
   // Get runtime config from environment (set by webpack)
-  const runtimeConfig = typeof window !== 'undefined' && (window as any).GISTS_CONFIG
+  const runtimeConfig =
+    typeof window === 'undefined' ? undefined : (window as GistsConfigWindow).GISTS_CONFIG
   const client = runtimeConfig ? createGistsClient(runtimeConfig) : null
 
   useEffect(() => {

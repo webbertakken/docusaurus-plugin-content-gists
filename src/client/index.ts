@@ -53,15 +53,17 @@ class GistsClient {
     return '/gists'
   }
 
-  // Client-side search/filtering (if needed)
-  filterGists(gists: any[], searchTerm: string): any[] {
+  // Client-side search/filtering. The `Gist` shape comes from the octokit
+  // response; we use a structural type with only the fields we read.
+  filterGists<T extends ClientGist>(gists: T[], searchTerm: string): T[] {
     if (!searchTerm) return gists
 
+    const needle = searchTerm.toLowerCase()
     return gists.filter(
       (gist) =>
-        gist.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        Object.values(gist.files || {}).some((file: any) =>
-          file.filename?.toLowerCase().includes(searchTerm.toLowerCase()),
+        gist.description?.toLowerCase().includes(needle) ||
+        Object.values(gist.files ?? {}).some((file) =>
+          file?.filename?.toLowerCase().includes(needle),
         ),
     )
   }
@@ -70,6 +72,16 @@ class GistsClient {
 // Export factory function
 export function createGistsClient(config: RuntimeConfig): GistsClient {
   return new GistsClient(config)
+}
+
+// Minimal structural type the client-side filter uses. Avoids leaking the
+// octokit Gist shape into the client bundle.
+export interface ClientGistFile {
+  filename?: string | null
+}
+export interface ClientGist {
+  description?: string | null
+  files?: Record<string, ClientGistFile | null | undefined>
 }
 
 // Export types for theme components

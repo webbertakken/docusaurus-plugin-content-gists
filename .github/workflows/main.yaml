@@ -51,8 +51,17 @@ jobs:
           case "$(yarn --version)" in 1.*) echo 'expected up-to-date yarn version'; exit 1 ;; esac
           yarn install --immutable
 
-      - name: Formatting
-        run: yarn prettier --check .
+      - name: Format
+        run: yarn format:check
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Typecheck
+        run: yarn typecheck
+
+      - name: Test
+        run: yarn coverage
 
       - name: Build
         run: yarn build
