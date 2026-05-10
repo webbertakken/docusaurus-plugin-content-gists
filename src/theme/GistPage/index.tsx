@@ -23,7 +23,7 @@ const GistPage = ({ gist }: Props) => {
   return (
     <GistLayout>
       {Object.values(files!).map((file, index) => {
-        const language = mapGitHubLanguageToPrismLanguage(file!.language!)
+        const language = file?.language && mapGitHubLanguageToPrismLanguage(file.language)
 
         return (
           <div key={file!.filename} className={styles.file}>
