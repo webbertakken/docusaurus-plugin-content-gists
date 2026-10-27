@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 9
+  version: 10
   cacheKey: 10
 
 "@ampproject/remapping@npm:^2.2.0":
@@ -4362,14 +4362,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^18.2.67":
-  version: 18.2.67
-  resolution: "@types/react@npm:18.2.67"
+"@types/react@npm:^19.0.0":
+  version: 19.3.0
+  resolution: "@types/react@npm:19.3.0"
   dependencies:
-    "@types/prop-types": "npm:*"
-    "@types/scheduler": "npm:*"
-    csstype: "npm:^3.0.2"
-  checksum: 10/d7e248dbe8d9d3b05f0d8e128d615fc9c85aa2c5d15634271d20cb9b343dbeffb0875f31a44e7ac63b42afc25949bd4c3633b7ebee45ee4666591ca934a8dffb
+    csstype: "npm:^3.2.2"
+  checksum: 10/2f4589222fd9c512e1ef78e65f334ade8777400add8ec0803fcc3a044761679b7984ba8410a890af24255383c3251a568bb692b60acfa22397ba0a64b2e032bf
   languageName: node
   linkType: hard
 
@@ -6568,6 +6566,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"csstype@npm:^3.2.2":
+  version: 3.2.3
+  resolution: "csstype@npm:3.2.3"
+  checksum: 10/ad41baf7e2ffac65ab544d79107bf7cd1a4bb9bab9ac3302f59ab4ba655d5e30942a8ae46e10ba160c6f4ecea464cc95b975ca2fefbdeeacd6ac63f12f99fe1f
+  languageName: node
+  linkType: hard
+
 "date-fns@npm:^2.30.0":
   version: 2.30.0
   resolution: "date-fns@npm:2.30.0"
@@ -6836,7 +6841,7 @@ __metadata:
     "@octokit/plugin-throttling": "npm:^11.0.1"
     "@octokit/types": "npm:^12.6.0"
     "@types/node": "npm:^20.11.30"
-    "@types/react": "npm:^18.2.67"
+    "@types/react": "npm:^19.0.0"
     "@typescript/native-preview": "npm:^7.0.0-dev.20260505.1"
     "@vitest/coverage-istanbul": "npm:^4.1.5"
     chokidar: "npm:^3.6.0"
@@ -13196,14 +13201,14 @@ __metadata:
 
 "resolve@patch:resolve@npm%3A^1.1.6#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.14.2#optional!builtin<compat/resolve>":
   version: 1.22.0
-  resolution: "resolve@patch:resolve@npm%3A1.22.0#optional!builtin<compat/resolve>::version=1.22.0&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A1.22.0#optional!builtin<compat/resolve>::version=1.22.0&hash=9bd1a5"
   dependencies:
     is-core-module: "npm:^2.8.1"
     path-parse: "npm:^1.0.7"
     supports-preserve-symlinks-flag: "npm:^1.0.0"
   bin:
     resolve: bin/resolve
-  checksum: 10/cb53ccafb067fb04989dbff2ce7186d03f4a55b7283eab91b545d614b336dc509faa5c71210ce77ab1a4b0f7de4ffbccc170febcbeef40bf5a09b9ddb05bf447
+  checksum: 10/04dccdbfa8797ff7c0159562be2a21dd5077f9fefa5faeb60bddedf5c677d2d00d4504dd5d5929ce83d2ac3a9218eb06df8e641c5bcab75c9516bffa00244113
   languageName: node
   linkType: hard
 
