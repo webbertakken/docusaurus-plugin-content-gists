@@ -8,7 +8,7 @@ interface Props {
   children: ReactNode
 }
 
-function Index({ children }: Props): JSX.Element {
+function Index({ children }: Props): React.JSX.Element {
   return (
     <Layout wrapperClassName={styles.layout}>
       <div className={styles.container}>{children}</div>
