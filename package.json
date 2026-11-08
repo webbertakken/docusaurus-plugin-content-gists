@@ -54,13 +54,13 @@
     "@docusaurus/types": "^3.1.1",
     "@docusaurus/utils-validation": "^3.1.1",
     "@octokit/plugin-throttling": "^11.0.1",
-    "octokit": "^3.1.2"
+    "octokit": "^5.0.0"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.1.1",
     "@docusaurus/tsconfig": "^3.1.1",
     "@docusaurus/types": "^3.1.1",
-    "@octokit/types": "^12.6.0",
+    "@octokit/types": "^18.0.0",
     "@types/node": "^22.19.0",
     "@types/react": "^19.0.0",
     "@typescript/native-preview": "^7.0.0-dev.20260505.1",
